@@ -6,6 +6,8 @@ import s from './DropdownMenu.module.css'
 import { Moon, Sun } from '@components/icons'
 import { Menu, Transition } from '@headlessui/react'
 import useLogout from '@lib/bigcommerce/use-logout'
+import { useRouter } from 'next/router'
+
 interface DropdownMenuProps {
   open: boolean
 }
@@ -20,7 +22,7 @@ const LINKS = [
     href: '/profile',
   },
   {
-    name: 'Cart',
+    name: 'My Cart',
     href: '/cart',
   },
 ]
@@ -28,6 +30,8 @@ const LINKS = [
 const DropdownMenu: FC<DropdownMenuProps> = ({ open = false }) => {
   const { theme, setTheme } = useTheme()
   const logout = useLogout()
+  const { pathname } = useRouter()
+
   return (
     <Transition
       show={open}
@@ -40,42 +44,48 @@ const DropdownMenu: FC<DropdownMenuProps> = ({ open = false }) => {
     >
       <Menu.Items className={s.dropdownMenu}>
         {LINKS.map(({ name, href }) => (
-          <Link href={href} key={href}>
-            <Menu.Item>
-              {({ active }) => (
-                <a className={cn(s.link, { [s.active]: active })}>{name}</a>
+          <Menu.Item key={href}>
+            <div>
+              <Link href={href}>
+                <a
+                  className={cn(s.link, {
+                    [s.active]: pathname === href,
+                  })}
+                >
+                  {name}
+                </a>
               </Link>
-        )}
-      </Menu.Item>
+            </div>
+          </Menu.Item>
         ))}
-      <Menu.Item>
-        <a
-          className={cn(s.link, 'justify-between')}
-          onClick={() =>
-            theme === 'dark' ? setTheme('light') : setTheme('dark')
-          }
-        >
-          <div>
-            Theme: <strong>{theme}</strong>{' '}
-          </div>
-          <div className="ml-3">
-            {theme == 'dark' ? (
-              <Moon width={20} height={20} />
-            ) : (
-              <Sun width="20" height={20} />
-            )}
-          </div>
-        </a>
-      </Menu.Item>
-      <Menu.Item>
-        <a
-          className={cn(s.link, 'border-t border-accents-2 mt-4')}
-          onClick={() => logout()}
-        >
-          Logout
-        </a>
-      </Menu.Item>
-    </Menu.Items>
+        <Menu.Item>
+          <a
+            className={cn(s.link, 'justify-between')}
+            onClick={() =>
+              theme === 'dark' ? setTheme('light') : setTheme('dark')
+            }
+          >
+            <div>
+              Theme: <strong>{theme}</strong>{' '}
+            </div>
+            <div className="ml-3">
+              {theme == 'dark' ? (
+                <Moon width={20} height={20} />
+              ) : (
+                <Sun width="20" height={20} />
+              )}
+            </div>
+          </a>
+        </Menu.Item>
+        <Menu.Item>
+          <a
+            className={cn(s.link, 'border-t border-accents-2 mt-4')}
+            onClick={() => logout()}
+          >
+            Logout
+          </a>
+        </Menu.Item>
+      </Menu.Items>
     </Transition >
   )
 }
