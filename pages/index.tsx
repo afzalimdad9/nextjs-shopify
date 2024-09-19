@@ -4,8 +4,6 @@ import { Layout } from '@components/core'
 import { Grid, Marquee, Hero } from '@components/ui'
 import { ProductCard } from '@components/product'
 import getSiteInfo from '@lib/bigcommerce/api/operations/get-site-info'
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
 
 export async function getStaticProps({ preview }: GetStaticPropsContext) {
   const { products } = await getAllProducts()
@@ -21,12 +19,6 @@ export default function Home({
   categories,
   brands,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const router = useRouter()
-
-  useEffect(() => {
-    router.prefetch('/search')
-  }, [])
-
   return (
     <div className="mt-3">
       <Grid items={products.slice(0, 3)} wrapper={ProductCard} />
@@ -53,21 +45,21 @@ export default function Home({
       <div className="py-12 flex flex-row w-full">
         <div className="pr-3 w-48">
           <ul className="mb-10">
-            <li className="py-1 text-black font-bold tracking-wide">
+            <li className="py-1 text-primary font-bold tracking-wide">
               All Categories
             </li>
             {categories.map((cat) => (
-              <li key={cat.path} className="py-1 text-gray-800">
+              <li key={cat.path} className="py-1 text-secondary">
                 <a href="#">{cat.name}</a>
               </li>
             ))}
           </ul>
           <ul className="">
-            <li className="py-1 text-black font-bold tracking-wide">
+            <li className="py-1 text-primary font-bold tracking-wide">
               All Designers
             </li>
             {brands.flatMap(({ node }) => (
-              <li key={node.path} className="py-1 text-gray-800">
+              <li key={node.path} className="py-1 text-secondary">
                 <a href="#">{node.name}</a>
               </li>
             ))}
