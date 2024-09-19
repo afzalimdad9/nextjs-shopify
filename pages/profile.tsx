@@ -4,7 +4,7 @@ import getAllPages from '@lib/bigcommerce/api/operations/get-all-pages'
 import useCustomer from '@lib/bigcommerce/use-customer'
 import { Layout } from '@components/core'
 import { Container, Text } from '@components/ui'
-import useCustomer from '@bigcommerce/storefront-data-hooks/dist/use-customer'
+import useCustomer from '@bigcommerce/storefront-data-hooks/use-customer'
 export default function Profile() {
   const { data } = useCustomer()
   return (
