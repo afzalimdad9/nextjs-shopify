@@ -1,6 +1,5 @@
-import type { GetStaticPropsContext } from 'next'
-import { getConfig } from '@lib/bigcommerce/api'
-import getAllPages from '@lib/bigcommerce/api/operations/get-all-pages'
+import { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
+import getAllPages from '@bigcommerce/storefront-data-hooks/dist/api/operations/get-all-pages'
 import { Layout } from '@components/core'
 import { Container } from '@components/ui'
 
