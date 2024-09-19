@@ -3,14 +3,12 @@ import { useRouter } from 'next/router';
 import getProduct from 'lib/bigcommerce/api/operations/get-product';
 import { Layout } from '@components/core';
 import { ProductView } from '@components/product';
+import getAllProductPaths from '@lib/bigcommerce/api/operations/get-all-product-paths';
 
 export async function getStaticProps({
   params,
 }: GetStaticPropsContext<{ slug: string }>) {
   const { product } = await getProduct({ variables: { slug: params!.slug } });
-
-  console.log('PRODUCT', product);
-
   const productData = {
     title: 'T-Shirt',
     description: `
@@ -27,6 +25,7 @@ export async function getStaticProps({
   };
   return {
     props: {
+      product,
       productData,
     },
     revalidate: 200,
@@ -34,16 +33,24 @@ export async function getStaticProps({
 }
 
 export async function getStaticPaths() {
+  const { products } = await getAllProductPaths();
+
   return {
-    paths: [],
+    paths: products.map((product) => ({
+      params: { slug: product!.node.path },
+    })),
     fallback: 'unstable_blocking',
   };
 }
 
 export default function Home({
+  product,
   productData,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  console.log('PRODUCT', product);
+
   const router = useRouter();
+
   return (
     <Layout>
       {router.isFallback ? (

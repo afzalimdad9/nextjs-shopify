@@ -2,8 +2,14 @@ import type {
   GetAllProductsQuery,
   GetAllProductsQueryVariables,
 } from "lib/bigcommerce/schema";
-import type { RecursivePartial, RecursiveRequired } from "../types";
-import { getConfig, Images, ProductImageVariables } from "..";
+import type { RecursivePartial, RecursiveRequired } from "../utils/types";
+import { productInfoFragment } from "../fragments/product";
+import {
+  BigcommerceConfig,
+  getConfig,
+  Images,
+  ProductImageVariables,
+} from "..";
 
 export const getAllProductsQuery = /* GraphQL */ `
   query getAllProducts(
@@ -26,80 +32,14 @@ export const getAllProductsQuery = /* GraphQL */ `
         edges {
           cursor
           node {
-            entityId
-            name
-            path
-            brand {
-              name
-            }
-            description
-            prices {
-              price {
-                value
-                currencyCode
-              }
-              salePrice {
-                value
-                currencyCode
-              }
-            }
-            images {
-              edges {
-                node {
-                  urlSmall: url(width: $imgSmallWidth, height: $imgSmallHeight)
-                  urlMedium: url(
-                    width: $imgMediumWidth
-                    height: $imgMediumHeight
-                  )
-                  urlLarge: url(width: $imgLargeWidth, height: $imgLargeHeight)
-                  urlXL: url(width: $imgXLWidth, height: $imgXLHeight)
-                }
-              }
-            }
-            variants {
-              edges {
-                node {
-                  entityId
-                  defaultImage {
-                    urlSmall: url(
-                      width: $imgSmallWidth
-                      height: $imgSmallHeight
-                    )
-                    urlMedium: url(
-                      width: $imgMediumWidth
-                      height: $imgMediumHeight
-                    )
-                    urlLarge: url(
-                      width: $imgLargeWidth
-                      height: $imgLargeHeight
-                    )
-                    urlXL: url(width: $imgXLWidth, height: $imgXLHeight)
-                  }
-                }
-              }
-            }
-            options {
-              edges {
-                node {
-                  entityId
-                  displayName
-                  isRequired
-                  values {
-                    edges {
-                      node {
-                        entityId
-                        label
-                      }
-                    }
-                  }
-                }
-              }
-            }
+            ...productInfo
           }
         }
       }
     }
   }
+
+  ${productInfoFragment}
 `;
 
 export interface GetAllProductsResult<T> {
@@ -114,21 +54,24 @@ export type ProductVariables = Images &
 async function getAllProducts(opts?: {
   query?: string;
   variables?: ProductVariables;
+  config?: BigcommerceConfig;
 }): Promise<GetAllProductsResult<GetAllProductsQuery>>;
 
 async function getAllProducts<T, V = any>(opts: {
   query: string;
   variables?: V;
+  config?: BigcommerceConfig;
 }): Promise<GetAllProductsResult<T>>;
 
 async function getAllProducts({
   query = getAllProductsQuery,
   variables: vars,
+  config = getConfig(),
 }: {
   query?: string;
   variables?: ProductVariables;
+  config?: BigcommerceConfig;
 } = {}): Promise<GetAllProductsResult<GetAllProductsQuery>> {
-  const config = getConfig();
   const variables: GetAllProductsQueryVariables = {
     ...config.imageVariables,
     ...vars,
