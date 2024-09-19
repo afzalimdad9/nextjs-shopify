@@ -6,7 +6,7 @@ import { CommerceProvider } from '@bigcommerce/storefront-data-hooks'
 import { useAcceptCookies } from '@lib/hooks/useAcceptCookies'
 import { CartSidebarView } from '@components/cart'
 import { Container, Sidebar, Button, Modal, Toast } from '@components/ui'
-import { Navbar, FeatureBar, Footer } from '@components/core'
+import { Navbar, Featurebar, Footer } from '@components/common'
 import { LoginView, SignUpView, ForgotPassword } from '@components/auth'
 import { useUI } from '@components/ui/context'
 import { usePreventScroll } from '@react-aria/overlays'
@@ -43,8 +43,9 @@ const Layout: FC<Props> = ({ children, pageProps }) => {
       const scrolled = scrollTop > offset
 
       setHasScrolled(scrolled)
-    }, 1)
-  , [])
+    }, 1),
+    []
+  )
 
   useEffect(() => {
     document.addEventListener('scroll', handleScroll)
@@ -52,8 +53,6 @@ const Layout: FC<Props> = ({ children, pageProps }) => {
       document.removeEventListener('scroll', handleScroll)
     }
   }, [handleScroll])
-
-  console.log(acceptedCookies)
 
   return (
     <CommerceProvider locale={locale}>

@@ -2,10 +2,10 @@ import '@assets/main.css'
 import 'keen-slider/keen-slider.min.css'
 
 import { FC } from 'react'
-import { Head } from '@components/core'
 import type { AppProps } from 'next/app'
+
 import { ManagedUIContext } from '@components/ui/context'
-import { CommerceProvider } from '@lib/bigcommerce'
+import { Head } from '@components/common'
 
 const Noop: FC = ({ children }) => <>{children}</>
 

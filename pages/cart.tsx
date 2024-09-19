@@ -1,7 +1,9 @@
 import type { GetStaticPropsContext } from 'next'
 import { getConfig } from '@bigcommerce/storefront-data-hooks/api'
 import getAllPages from '@bigcommerce/storefront-data-hooks/api/operations/get-all-pages'
-import { Layout } from '@components/core'
+import useCart from '@bigcommerce/storefront-data-hooks/cart/use-cart'
+import usePrice from '@bigcommerce/storefront-data-hooks/use-price'
+import { Layout } from '@components/common'
 import { Button } from '@components/ui'
 import { Bag, Cross, Check } from '@components/icons'
 import useCart from '@bigcommerce/storefront-data-hooks/cart/use-cart'
@@ -45,7 +47,7 @@ export default function Cart() {
       <div className="lg:col-span-8">
         {isEmpty ? (
           <div className="flex-1 px-12 py-24 flex flex-col justify-center items-center ">
-            <span className="border border-dashed border-secondary rounded-full flex items-center justify-center w-16 h-16 bg-primary p-12 rounded-lg text-primary">
+            <span className="border border-dashed border-secondary flex items-center justify-center w-16 h-16 bg-primary p-12 rounded-lg text-primary">
               <Bag className="absolute" />
             </span>
             <h2 className="pt-6 text-2xl font-bold tracking-wide text-center">
