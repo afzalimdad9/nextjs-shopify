@@ -1,7 +1,10 @@
 import '@assets/global.css'
 import '@assets/tailwind.css'
 import '@assets/utils.css'
+
+// To be removed
 import 'animate.css'
+
 import { FC } from 'react'
 import { Head } from '@components/core'
 import type { AppProps } from 'next/app'
