@@ -1,17 +1,46 @@
-import { FC, useCallback, useEffect, useState } from 'react'
 import cn from 'classnames'
-import { useRouter } from 'next/router'
-import type { Page } from '@bigcommerce/storefront-data-hooks/api/operations/get-all-pages'
-import { CommerceProvider } from '@bigcommerce/storefront-data-hooks'
-import { useAcceptCookies } from '@lib/hooks/useAcceptCookies'
-import { CartSidebarView } from '@components/cart'
-import { Container, Sidebar, Button, Modal, Toast } from '@components/ui'
-import { Navbar, Featurebar, Footer } from '@components/common'
-import { LoginView, SignUpView, ForgotPassword } from '@components/auth'
-import { useUI } from '@components/ui/context'
-import { usePreventScroll } from '@react-aria/overlays'
+import dynamic from 'next/dynamic'
 import s from './Layout.module.css'
+import { useRouter } from 'next/router'
 import debounce from 'lodash.debounce'
+import React, { FC, useCallback, useEffect, useState, Suspense } from 'react'
+import { useUI } from '@components/ui/context'
+import { Navbar, Footer } from '@components/common'
+import { usePreventScroll } from '@react-aria/overlays'
+import { useAcceptCookies } from '@lib/hooks/useAcceptCookies'
+import { CommerceProvider } from '@bigcommerce/storefront-data-hooks'
+import { Container, Sidebar, Button, Modal, LoadingDots } from '@components/ui'
+import type { Page } from '@bigcommerce/storefront-data-hooks/api/operations/get-all-pages'
+
+const Loading = () => (
+  <div className="w-80 h-80 flex items-center text-center justify-center p-3">
+    <LoadingDots />
+  </div>
+)
+
+const dynamicProps = {
+  loading: () => <Loading />,
+}
+const CartSidebarView = dynamic(
+  () => import('@components/cart/CartSidebarView')
+)
+const LoginView = dynamic(
+  () => import('@components/auth/LoginView'),
+  dynamicProps
+)
+const SignUpView = dynamic(
+  () => import('@components/auth/SignUpView'),
+  dynamicProps
+)
+const ForgotPassword = dynamic(
+  () => import('@components/auth/ForgotPassword'),
+  dynamicProps
+)
+const FeatureBar = dynamic(
+  () => import('@components/common/FeatureBar'),
+  dynamicProps
+)
+
 interface Props {
   className?: string
   children?: any
@@ -24,13 +53,12 @@ const Layout: FC<Props> = ({ children, pageProps }) => {
     closeSidebar,
     closeModal,
     modalView,
-    toastText,
-    closeToast,
-    displayToast,
   } = useUI()
   const { acceptedCookies, onAcceptCookies } = useAcceptCookies()
   const [hasScrolled, setHasScrolled] = useState(false)
   const { locale = 'en-US' } = useRouter()
+
+  console.log('Layout')
 
   usePreventScroll({
     isDisabled: !(displaySidebar || displayModal),
@@ -72,7 +100,6 @@ const Layout: FC<Props> = ({ children, pageProps }) => {
         <Sidebar open={displaySidebar} onClose={closeSidebar}>
           <CartSidebarView />
         </Sidebar>
-
         <Modal open={displayModal} onClose={closeModal}>
           {modalView === 'LOGIN_VIEW' && <LoginView />}
           {modalView === 'SIGNUP_VIEW' && <SignUpView />}
@@ -87,10 +114,6 @@ const Layout: FC<Props> = ({ children, pageProps }) => {
             </Button>
           }
         />
-
-        {/* <Toast open={displayToast} onClose={closeModal}>
-          {toastText}
-        </Toast> */}
       </div>
     </CommerceProvider>
   )
