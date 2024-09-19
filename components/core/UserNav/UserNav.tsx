@@ -1,14 +1,12 @@
 import Link from 'next/link'
 import cn from 'classnames'
-import s from './UserNav.module.css'
-import { FC, useRef } from 'react'
-import { Avatar } from '@components/core'
+import useCart from '@lib/bigcommerce/cart/use-cart'
+import { Avatar, Toggle } from '@components/core'
 import { Heart, Bag } from '@components/icon'
 import { useUI } from '@components/ui/context'
-import DropdownMenu from './DropdownMenu'
-import { Menu } from '@headlessui/react'
-import useCart from '@lib/bigcommerce/cart/use-cart'
-
+import s from './UserNav.module.css'
+import { useTheme } from 'next-themes'
+import Link from 'next/link'
 interface Props {
   className?: string
 }
@@ -19,15 +17,9 @@ const countItems = (count: number, items: any[]) =>
 
 const UserNav: FC<Props> = ({ className, children, ...props }) => {
   const { data } = useCart()
-  const {
-    openSidebar,
-    closeSidebar,
-    displaySidebar,
-    displayDropdown,
-    openDropdown,
-    closeDropdown,
-  } = useUI()
-
+  const { theme, setTheme } = useTheme()
+  const [displayDropdown, setDisplayDropdown] = useState(false)
+  const { openSidebar, closeSidebar, displaySidebar } = useUI()
   const itemsCount = Object.values(data?.line_items ?? {}).reduce(countItems, 0)
   let ref = useRef() as React.MutableRefObject<HTMLInputElement>
 
@@ -46,25 +38,43 @@ const UserNav: FC<Props> = ({ className, children, ...props }) => {
               </span>
             )}
           </li>
-          <Link href="/wishlist">
-            <li className={cn(s.item, s.heart)}>
-              <Heart />
-            </li>
-          </Link>
-          <li className={s.item}>
-            <Menu>
-              {({ open }) => (
-                <>
-                  <Menu.Button className="inline-flex justify-center rounded-full">
-                    <Avatar />
-                  </Menu.Button>
-                  <DropdownMenu onClose={closeDropdown} open={open} />
-                </>
-              )}
-            </Menu>
-          </li>
-        </ul>
-      </div>
+        </Link>
+        <li
+          className={s.item}
+          onClick={() => {
+            setDisplayDropdown((i) => !i)
+          }}
+        >
+          <Avatar />
+        </li>
+      </ul>
+
+      {displayDropdown && (
+        <div className={s.dropdownMenu}>
+          <nav className={s.dropdownMenuContainer}>
+            <Link href="#">
+              <a className={s.link}>My Purchases</a>
+            </Link>
+            <Link href="#">
+              <a className={s.link}>My Account</a>
+            </Link>
+            <span className="inline-flex items-start px-6 py-2">
+              <span className="capitalize inline-block mr-2 text-base leading-6 font-medium text-gray-900">
+                Theme
+              </span>
+              <Toggle
+                checked={theme === 'dark'}
+                onChange={() =>
+                  theme === 'dark' ? setTheme('light') : setTheme('dark')
+                }
+              />
+            </span>
+            <Link href="#">
+              <a className={cn(s.link, 'mt-4')}>Logout</a>
+            </Link>
+          </nav>
+        </div>
+      )}
     </nav>
   )
 }
