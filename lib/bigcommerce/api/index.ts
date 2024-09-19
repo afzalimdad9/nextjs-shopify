@@ -43,10 +43,23 @@ export default class BigcommerceAPI implements CommerceAPI {
     return json.data;
   }
 
-  async getAllProducts<T = GetAllProductsQuery>(
-    query: string = getAllProductsQuery
-  ): Promise<T> {
+  async getAllProducts<T>(opts: {
+    query: string;
+  }): Promise<GetAllProductsResult<T>>;
+
+  async getAllProducts(opts?: {
+    query?: string;
+  }): Promise<GetAllProductsResult<GetAllProductsQuery>>;
+
+  async getAllProducts({
+    query = getAllProductsQuery,
+  }: { query?: string } = {}): Promise<
+    GetAllProductsResult<RecursivePartial<GetAllProductsQuery>>
+  > {
     const data = await this.fetch<RecursivePartial<GetAllProductsQuery>>(query);
-    return data as T;
+
+    return {
+      products: data?.site?.products?.edges,
+    };
   }
 }
