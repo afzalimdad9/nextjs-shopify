@@ -1,18 +1,15 @@
 import { FC, useEffect, useState, useCallback } from 'react'
 import { validate } from 'email-validator'
-import { Info } from '@components/icons'
+import { Info } from'@components/icons'
 import { useUI } from '@components/ui/context'
 import { Logo, Button, Input } from '@components/ui'
 import useSignup from '@lib/bigcommerce/use-signup'
 
 interface Props {}
 
-const SignUpView: FC<Props> = () => {
+const ForgotPassword: FC<Props> = () => {
   // Form State
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [dirty, setDirty] = useState(false)
@@ -27,39 +24,33 @@ const SignUpView: FC<Props> = () => {
       handleValidation()
     }
 
-    try {
-      setLoading(true)
-      setMessage('')
-      await signup({
-        email,
-        firstName,
-        lastName,
-        password,
-      })
-      setLoading(false)
-      closeModal()
-    } catch ({ errors }) {
-      setMessage(errors[0].message)
-      setLoading(false)
-    }
+    // try {
+    //   setLoading(true)
+    //   setMessage('')
+    //   await signup({
+    //     email,
+    //   })
+    //   setLoading(false)
+    //   closeModal()
+    // } catch ({ errors }) {
+    //   setMessage(errors[0].message)
+    //   setLoading(false)
+    // }
   }
 
   const handleValidation = useCallback(() => {
-    // Test for Alphanumeric password
-    const validPassword = /^(?=.*[a-zA-Z])(?=.*[0-9])/.test(password)
-
     // Unable to send form unless fields are valid.
     if (dirty) {
-      setDisabled(!validate(email) || password.length < 7 || !validPassword)
+      setDisabled(!validate(email))
     }
-  }, [email, password, dirty])
+  }, [email, dirty])
 
   useEffect(() => {
     handleValidation()
   }, [handleValidation])
 
   return (
-    <div className="w-96 flex flex-col justify-between p-3">
+    <div className="w-80 flex flex-col justify-between p-3">
       <div className="flex justify-center pb-12 ">
         <Logo width="64px" height="64px" />
       </div>
@@ -67,19 +58,8 @@ const SignUpView: FC<Props> = () => {
         {message && (
           <div className="text-red border border-red p-3">{message}</div>
         )}
-        <Input placeholder="First Name" onChange={setFirstName} />
-        <Input placeholder="Last Name" onChange={setLastName} />
+
         <Input placeholder="Email" onChange={setEmail} />
-        <Input placeholder="Password" onChange={setPassword} />
-        <span className="text-accents-8">
-          <span className="inline-block align-middle ">
-            <Info width="15" height="15" />
-          </span>{' '}
-          <span className="leading-6 text-sm">
-            <strong>Info</strong>: Passwords must be longer than 7 chars and
-            include numbers.{' '}
-          </span>
-        </span>
         <div className="pt-2 w-full flex flex-col">
           <Button
             variant="slim"
@@ -87,11 +67,11 @@ const SignUpView: FC<Props> = () => {
             loading={loading}
             disabled={disabled}
           >
-            Sign Up
+            Recover Password
           </Button>
         </div>
 
-        <span className="pt-1 text-center text-sm">
+        <span className="pt-3 text-center text-sm">
           <span className="text-accents-7">Do you have an account?</span>
           {` `}
           <a
@@ -106,4 +86,4 @@ const SignUpView: FC<Props> = () => {
   )
 }
 
-export default SignUpView
+export default ForgotPassword
