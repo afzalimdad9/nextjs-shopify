@@ -1,10 +1,11 @@
 import { FC } from 'react'
-import type { Page } from '@lib/bigcommerce/api/operations/get-all-pages'
-import { CommerceProvider } from '@lib/bigcommerce'
 import { Navbar, Featurebar, Footer } from '@components/core'
 import { Container, Sidebar } from '@components/ui'
 import { CartSidebarView } from '@components/cart'
 import { UIProvider, useUI } from '@components/ui/context'
+import s from './Layout.module.css'
+import { ThemeProvider } from 'next-themes'
+import { SSRProvider, OverlayProvider } from 'react-aria'
 
 interface LayoutProps {
   pageProps: {
@@ -12,12 +13,8 @@ interface LayoutProps {
   }
 }
 
-interface Props {
-  children?: any
-  pages?: Page[]
-}
-
-const CoreLayout: FC<Props> = ({ children, pages }) => {
+const CoreLayout: FC<Props> = ({ className, children }) => {
+  const rootClassName = cn(s.root, className)
   const { displaySidebar, closeSidebar } = useUI()
 
   return (
@@ -38,12 +35,16 @@ const CoreLayout: FC<Props> = ({ children, pages }) => {
   )
 }
 
-const Layout: FC<LayoutProps> = ({ children, pageProps }) => (
-  <CommerceProvider locale="en-us">
-    <UIProvider>
-      <CoreLayout pages={pageProps.pages}>{children}</CoreLayout>
-    </UIProvider>
-  </CommerceProvider>
+const Layout: FC<Props> = (props) => (
+  <UIProvider>
+    <ThemeProvider>
+      <SSRProvider>
+        <OverlayProvider>
+          <CoreLayout {...props} />
+        </OverlayProvider>
+      </SSRProvider>
+    </ThemeProvider>
+  </UIProvider>
 )
 
 export default Layout
