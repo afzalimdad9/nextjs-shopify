@@ -17,9 +17,8 @@ const countItems = (count: number, items: any[]) =>
 
 const UserNav: FC<Props> = ({ className, children, ...props }) => {
   const { data } = useCart()
-  const { theme, setTheme } = useTheme()
-  const [displayDropdown, setDisplayDropdown] = useState(false)
   const { openSidebar, closeSidebar, displaySidebar } = useUI()
+
   const itemsCount = Object.values(data?.line_items ?? {}).reduce(countItems, 0)
   let ref = useRef() as React.MutableRefObject<HTMLInputElement>
 
@@ -62,37 +61,28 @@ const UserNav: FC<Props> = ({ className, children, ...props }) => {
               </span>
             )}
           </li>
-        </Link>
-        <button
-          className={cn(
-            s.item,
-            'rounded-full focus:shadow-outline-blue focus:outline-none'
-          )}
-          onClick={() => {
-            setDisplayDropdown((i) => !i)
-          }}
-        >
-          <Avatar />
-        </button>
-      </ul>
-
-      {displayDropdown && (
-        <div className={cn(s.dropdownMenu, 'shadow-lg')} id="user-dropdown">
-          <nav className={s.dropdownMenuContainer}>
-            <Link href="#">
-              <a className={s.link}>My Purchases</a>
-            </Link>
-            <Link href="#">
-              <a className={s.link}>My Account</a>
-            </Link>
-            <div className="my-1 h-px w-full bg-accents-2" />
-            <Link href="#">
-              <a className={cn(s.link)}>Logout</a>
-            </Link>
-          </nav>
-        </div>
-      )}
-    </nav>
+          <Link href="/wishlist">
+            <li className={s.item}>
+              <Heart />
+            </li>
+          </Link>
+          <li className={s.item}>
+            <Menu>
+              {({ open }) => {
+                return (
+                  <>
+                    <Menu.Button className="inline-flex justify-center rounded-full">
+                      <Avatar />
+                    </Menu.Button>
+                    <DropdownMenu open={open} />
+                  </>
+                )
+              }}
+            </Menu>
+          </li>
+        </ul>
+      </div>
+    </nav >
   )
 }
 

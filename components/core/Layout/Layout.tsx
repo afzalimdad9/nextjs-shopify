@@ -9,19 +9,19 @@ import { Container, Sidebar } from '@components/ui'
 import Button from '@components/ui/Button'
 import { CartSidebarView } from '@components/cart'
 import { useUI } from '@components/ui/context'
-
-import { CommerceProvider } from '@lib/bigcommerce'
+import s from './Layout.module.css'
+import { usePreventScroll } from '@react-aria/overlays'
 interface Props {
   className?: string
   children?: any
 }
 
-const Layout: FC<Props> = ({ className, children }) => {
-  const rootClassName = cn(s.root, className)
-  const { displaySidebar, closeSidebar } = useUI()
+const Layout: FC<Props> = ({ children, pageProps }) => {
+  const { displaySidebar, displayDropdown, closeSidebar } = useUI()
   const [acceptedCookies, setAcceptedCookies] = useState(false)
   const [hasScrolled, setHasScrolled] = useState(false)
 
+  // TODO: Update code, add throttle and more.
   useEffect(() => {
     const offset = 0
     function handleScroll() {
@@ -35,6 +35,11 @@ const Layout: FC<Props> = ({ className, children }) => {
       document.removeEventListener('scroll', handleScroll)
     }
   }, [])
+
+  console.log(displaySidebar, displayDropdown)
+  usePreventScroll({
+    isDisabled: !displaySidebar,
+  })
 
   return (
     <CommerceProvider locale="en-us">
@@ -51,9 +56,11 @@ const Layout: FC<Props> = ({ className, children }) => {
         </header>
         <main className="fit">{children}</main>
         <Footer pages={pageProps.pages} />
-        <Sidebar show={displaySidebar} close={closeSidebar}>
+
+        <Sidebar open={displaySidebar} onClose={closeSidebar}>
           <CartSidebarView />
         </Sidebar>
+
         <Featurebar
           title="This site uses cookies to improve your experience."
           description="By clicking, you agree to our Privacy Policy."
