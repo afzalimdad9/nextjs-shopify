@@ -38,43 +38,25 @@ const UserNav: FC<Props> = ({ className, children, ...props }) => {
               </span>
             )}
           </li>
-        </Link>
-        <li
-          className={s.item}
-          onClick={() => {
-            setDisplayDropdown((i) => !i)
-          }}
-        >
-          <Avatar />
-        </li>
-      </ul>
-
-      {displayDropdown && (
-        <div className={s.dropdownMenu}>
-          <nav className={s.dropdownMenuContainer}>
-            <Link href="#">
-              <a className={s.link}>My Purchases</a>
-            </Link>
-            <Link href="#">
-              <a className={s.link}>My Account</a>
-            </Link>
-            <span className="inline-flex items-start px-6 py-2">
-              <span className="capitalize inline-block mr-2 text-base leading-6 font-medium text-gray-900">
-                Theme
-              </span>
-              <Toggle
-                checked={theme === 'dark'}
-                onChange={() =>
-                  theme === 'dark' ? setTheme('light') : setTheme('dark')
-                }
-              />
-            </span>
-            <Link href="#">
-              <a className={cn(s.link, 'mt-4')}>Logout</a>
-            </Link>
-          </nav>
-        </div>
-      )}
+          <Link href="/wishlist">
+            <li className={s.item}>
+              <Heart />
+            </li>
+          </Link>
+          <li className={s.item}>
+            <Menu>
+              {({ open }) => (
+                <>
+                  <Menu.Button className="inline-flex justify-center rounded-full">
+                    <Avatar />
+                  </Menu.Button>
+                  <DropdownMenu onClose={closeDropdown} open={open} />
+                </>
+              )}
+            </Menu>
+          </li>
+        </ul>
+      </div>
     </nav>
   )
 }
