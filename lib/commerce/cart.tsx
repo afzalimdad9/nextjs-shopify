@@ -1,8 +1,6 @@
 import { createContext, useContext } from 'react';
 import useSWR, { responseInterface } from 'swr';
-import { useCommerce } from '.';
-
-export type Cart = any;
+import { Cart, useCommerce } from '.';
 
 export type CartResponse<C extends Cart> = responseInterface<C, Error> & {
   isEmpty: boolean;

@@ -1,9 +1,8 @@
 import {
   CartProvider as CommerceCartProvider,
   useCart as useCommerceCart,
-} from 'lib/commerce/cart';
-
-export type Cart = any;
+} from '../commerce/cart';
+import { Cart } from './index';
 
 export function CartProvider({ children }) {
   return <CommerceCartProvider>{children}</CommerceCartProvider>;

@@ -1,8 +1,11 @@
 import {
-  CommerceProvider as CoreCommerceProvider,
+  CommerceProvider,
   Connector,
-  useCommerce as useCoreCommerce,
-} from 'lib/commerce';
+  HookResolver,
+  useCommerce as useComm,
+} from '../commerce';
+
+export type Cart = any;
 
 async function getText(res: Response) {
   try {
@@ -20,7 +23,11 @@ async function getError(res: Response) {
   return { message: await getText(res) };
 }
 
-async function fetcher(url: string, query: string) {
+async function fetcher(
+  url: string,
+  query: string,
+  resolver: HookResolver<Cart>
+) {
   const res = await fetch(url);
 
   if (res.ok) {
@@ -30,18 +37,42 @@ async function fetcher(url: string, query: string) {
   throw await getError(res);
 }
 
-export const bigcommerce: Connector = {
+export const bigcommerce: Connector<Cart> = {
+  hooks: {
+    useCart: {
+      query: '',
+      resolver() {
+        return;
+      },
+    },
+    useAddItem: {
+      query: '',
+      resolver() {
+        return;
+      },
+    },
+    useUpdateItem: {
+      query: '',
+      resolver() {
+        return;
+      },
+    },
+    useRemoveItem: {
+      query: '',
+      resolver() {
+        return;
+      },
+    },
+  },
   locale: 'en-us',
   fetcher,
 };
 
 // TODO: The connector should be extendable when a developer is using it
-export function CommerceProvider({ children }) {
+export function BigcommerceProvider({ children }) {
   return (
-    <CoreCommerceProvider connector={bigcommerce}>
-      {children}
-    </CoreCommerceProvider>
+    <CommerceProvider connector={bigcommerce}>{children}</CommerceProvider>
   );
 }
 
-export const useCommerce = () => useCoreCommerce();
+export const useCommerce = () => useComm<Cart>();
