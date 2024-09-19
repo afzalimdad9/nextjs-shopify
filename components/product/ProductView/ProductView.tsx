@@ -81,6 +81,7 @@ const ProductView: FC<Props> = ({ product, className }) => {
               {product.images.edges?.map((image, i) => (
                 <div key={image?.node.urlXL} className={s.imageContainer}>
                   <Image
+                    alt={product.name}
                     className={s.img}
                     src={image?.node.urlXL!}
                     width={1050}
@@ -132,6 +133,7 @@ const ProductView: FC<Props> = ({ product, className }) => {
           </section>
           <div>
             <Button
+              aria-label="Add to Cart"
               type="button"
               className={s.button}
               onClick={addToCart}
