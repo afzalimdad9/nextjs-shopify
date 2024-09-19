@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import cn from 'classnames'
 import { ThemeProvider } from 'next-themes'
 import { SSRProvider, OverlayProvider } from 'react-aria'
@@ -20,13 +20,35 @@ const Layout: FC<Props> = ({ className, children }) => {
   const rootClassName = cn(s.root, className)
   const { displaySidebar, closeSidebar } = useUI()
   const [acceptedCookies, setAcceptedCookies] = useState(false)
+  const [hasScrolled, setHasScrolled] = useState(false)
+
+  useEffect(() => {
+    const offset = 0
+    function handleScroll() {
+      const { scrollTop } = document.documentElement
+      if (scrollTop > offset) setHasScrolled(true)
+      else setHasScrolled(false)
+    }
+    document.addEventListener('scroll', handleScroll)
+
+    return () => {
+      document.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   return (
     <CommerceProvider locale="en-us">
       <div className={cn(s.root)}>
-        <Container>
-          <Navbar />
-        </Container>
+        <header
+          className={cn(
+            'sticky top-0 bg-primary z-40 transition-all duration-150',
+            { 'shadow-magical': hasScrolled }
+          )}
+        >
+          <Container>
+            <Navbar />
+          </Container>
+        </header>
         <main className="fit">{children}</main>
         <Footer pages={pageProps.pages} />
         <Sidebar show={displaySidebar} close={closeSidebar}>

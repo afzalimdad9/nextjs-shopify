@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { FC, useEffect, useState } from 'react'
 import cn from 'classnames'
 import useCart from '@lib/bigcommerce/cart/use-cart'
 import { Avatar, Toggle } from '@components/core'
@@ -23,6 +23,30 @@ const UserNav: FC<Props> = ({ className, children, ...props }) => {
   const itemsCount = Object.values(data?.line_items ?? {}).reduce(countItems, 0)
   let ref = useRef() as React.MutableRefObject<HTMLInputElement>
 
+  useEffect(() => {
+    function handleClick(e: any) {
+      const isInside = e?.target?.closest(`#user-dropdown`) !== null
+      if (isInside) return
+      setDisplayDropdown(false)
+      document.removeEventListener('click', handleClick)
+    }
+    function handleKeyPress(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        setDisplayDropdown(false)
+        document.removeEventListener('keydown', handleKeyPress)
+      }
+    }
+
+    if (displayDropdown) {
+      document.addEventListener('click', handleClick)
+      document.addEventListener('keydown', handleKeyPress)
+      return () => {
+        document.removeEventListener('click', handleClick)
+        document.removeEventListener('keydown', handleKeyPress)
+      }
+    }
+  }, [displayDropdown])
+
   return (
     <nav className={cn(s.root, className)}>
       <div className={s.mainContainer}>
@@ -38,25 +62,36 @@ const UserNav: FC<Props> = ({ className, children, ...props }) => {
               </span>
             )}
           </li>
-          <Link href="/wishlist">
-            <li className={s.item}>
-              <Heart />
-            </li>
-          </Link>
-          <li className={s.item}>
-            <Menu>
-              {({ open }) => (
-                <>
-                  <Menu.Button className="inline-flex justify-center rounded-full">
-                    <Avatar />
-                  </Menu.Button>
-                  <DropdownMenu onClose={closeDropdown} open={open} />
-                </>
-              )}
-            </Menu>
-          </li>
-        </ul>
-      </div>
+        </Link>
+        <button
+          className={cn(
+            s.item,
+            'rounded-full focus:shadow-outline-blue focus:outline-none'
+          )}
+          onClick={() => {
+            setDisplayDropdown((i) => !i)
+          }}
+        >
+          <Avatar />
+        </button>
+      </ul>
+
+      {displayDropdown && (
+        <div className={cn(s.dropdownMenu, 'shadow-lg')} id="user-dropdown">
+          <nav className={s.dropdownMenuContainer}>
+            <Link href="#">
+              <a className={s.link}>My Purchases</a>
+            </Link>
+            <Link href="#">
+              <a className={s.link}>My Account</a>
+            </Link>
+            <div className="my-1 h-px w-full bg-accents-2" />
+            <Link href="#">
+              <a className={cn(s.link)}>Logout</a>
+            </Link>
+          </nav>
+        </div>
+      )}
     </nav>
   )
 }
