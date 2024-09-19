@@ -1,19 +1,21 @@
 import { FC } from 'react'
+import cn from 'classnames'
+import { ThemeProvider } from 'next-themes'
+import { SSRProvider, OverlayProvider } from 'react-aria'
+import type { Page } from '@lib/bigcommerce/api/operations/get-all-pages'
+import { CommerceProvider } from '@lib/bigcommerce'
 import { Navbar, Featurebar, Footer } from '@components/core'
 import { Container, Sidebar } from '@components/ui'
 import { CartSidebarView } from '@components/cart'
-import { UIProvider, useUI } from '@components/ui/context'
-import s from './Layout.module.css'
-import { ThemeProvider } from 'next-themes'
-import { SSRProvider, OverlayProvider } from 'react-aria'
+import { useUI } from '@components/ui/context'
 
-interface LayoutProps {
-  pageProps: {
-    pages?: Page[]
-  }
+import { CommerceProvider } from '@lib/bigcommerce'
+interface Props {
+  className?: string
+  children?: any
 }
 
-const CoreLayout: FC<Props> = ({ className, children }) => {
+const Layout: FC<Props> = ({ className, children }) => {
   const rootClassName = cn(s.root, className)
   const { displaySidebar, closeSidebar } = useUI()
 
@@ -34,17 +36,5 @@ const CoreLayout: FC<Props> = ({ className, children }) => {
     </div>
   )
 }
-
-const Layout: FC<Props> = (props) => (
-  <UIProvider>
-    <ThemeProvider>
-      <SSRProvider>
-        <OverlayProvider>
-          <CoreLayout {...props} />
-        </OverlayProvider>
-      </SSRProvider>
-    </ThemeProvider>
-  </UIProvider>
-)
 
 export default Layout
