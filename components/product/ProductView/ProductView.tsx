@@ -1,16 +1,15 @@
 import { FC, useState, useEffect } from 'react'
 import cn from 'classnames'
+import Image from 'next/image'
 import { NextSeo } from 'next-seo'
 import type { ProductNode } from '@lib/bigcommerce/api/operations/get-product'
 import useAddItem from '@lib/bigcommerce/cart/use-add-item'
-import bcImageSrc from '@lib/bc-image-src'
-import getPathname from '@lib/get-pathname'
+import { isDesktop } from '@lib/browser'
 import { useUI } from '@components/ui/context'
 import { Button, Container } from '@components/ui'
 import { Swatch, ProductSlider } from '@components/product'
 import { getProductOptions } from '../helpers'
 import s from './ProductView.module.css'
-import { isDesktop } from '@lib/browser'
 
 interface Props {
   className?: string
@@ -54,10 +53,7 @@ const ProductView: FC<Props> = ({ product, className }) => {
           description: product.description,
           images: [
             {
-              url: bcImageSrc({
-                src: getPathname(product.images.edges?.[0]?.node.urlOriginal!),
-                width: 1200,
-              }),
+              url: product.images.edges?.[0]?.node.urlOriginal!,
               width: 800,
               height: 600,
               alt: product.name,
@@ -78,13 +74,14 @@ const ProductView: FC<Props> = ({ product, className }) => {
 
           <div className={s.sliderContainer}>
             <ProductSlider>
-              {/** TODO: Change with Image Component  **/}
               {product.images.edges?.map((image, i) => (
-                <img
-                  key={image?.node.urlSmall}
-                  className={s.img}
-                  src={image?.node.urlXL}
-                  loading={i === 0 ? 'eager' : 'lazy'}
+                <Image
+                  key={image?.node.urlOriginal}
+                  src={image?.node.urlOriginal!}
+                  width={1200}
+                  height={1200}
+                  priority={i === 0}
+                  quality="90"
                 />
               ))}
             </ProductSlider>

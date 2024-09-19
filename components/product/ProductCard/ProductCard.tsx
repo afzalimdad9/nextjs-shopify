@@ -3,7 +3,6 @@ import cn from 'classnames'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { ProductNode } from '@lib/bigcommerce/api/operations/get-all-products'
-import getPathname from '@lib/get-pathname'
 import { Heart } from '@components/icon'
 import s from './ProductCard.module.css'
 
@@ -25,7 +24,7 @@ const ProductCard: FC<Props> = ({
   imgHeight,
   priority,
 }) => {
-  const src = getPathname(p.images.edges?.[0]?.node.urlOriginal!)
+  const src = p.images.edges?.[0]?.node.urlOriginal!
 
   if (variant === 'slim') {
     return (
@@ -40,6 +39,7 @@ const ProductCard: FC<Props> = ({
           width={imgWidth}
           height={imgHeight}
           priority={priority}
+          quality="90"
         />
       </div>
     )
@@ -62,12 +62,16 @@ const ProductCard: FC<Props> = ({
             <Heart />
           </div>
         </div>
-        <Image
-          src={src}
-          width={imgWidth}
-          height={imgHeight}
-          priority={priority}
-        />
+        <div className="absolute z-10 inset-0 flex items-center justify-center">
+          <Image
+            className={cn('w-full object-cover', s['product-image'])}
+            src={src}
+            width={imgWidth}
+            height={imgHeight}
+            priority={priority}
+            quality="90"
+          />
+        </div>
       </a>
     </Link>
   )
