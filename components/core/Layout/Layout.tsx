@@ -35,12 +35,12 @@ const Layout: FC<Props> = ({ className, children }) => {
         <Featurebar
           title="This site uses cookies to improve your experience."
           description="By clicking, you agree to our Privacy Policy."
+          hide={acceptedCookies}
           action={
             <Button className="mx-5" onClick={() => setAcceptedCookies(true)}>
               Accept cookies
             </Button>
           }
-          className={cn({ ['translate-y-full']: acceptedCookies })}
         />
       </div>
     </CommerceProvider>
