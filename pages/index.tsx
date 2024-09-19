@@ -7,16 +7,17 @@ import getSiteInfo from '@lib/bigcommerce/api/operations/get-site-info'
 
 export async function getStaticProps({ preview }: GetStaticPropsContext) {
   const { products } = await getAllProducts()
-  const { categories } = await getSiteInfo()
+  const { categories, brands } = await getSiteInfo()
 
   return {
-    props: { products, categories },
+    props: { products, categories, brands },
   }
 }
 
 export default function Home({
   products,
   categories,
+  brands,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
@@ -41,9 +42,28 @@ export default function Home({
         variant="secondary"
         wrapper={(p: any) => <ProductCard {...p} variant="slim" />}
       />
-      <div className="py-12 px-4 flex flex-row w-full">
-        <div className="flex-0 pr-3 w-48 break-words">
-          ALL CATEGORIES ACCESSORIES BAGS CLOTHING SHOES ALL DESIGNERS 032c 1017
+      <div className="py-12 flex flex-row w-full">
+        <div className="pr-3 w-48">
+          <ul className="uppercase">
+            <li>
+              <h2 className="font-bold">All Categories</h2>
+            </li>
+            {categories.map((cat) => (
+              <li key={cat.path} className="mt-2">
+                <a href="#">{cat.name}</a>
+              </li>
+            ))}
+          </ul>
+          <ul className="uppercase mt-6">
+            <li>
+              <h2 className="font-bold">All Designers</h2>
+            </li>
+            {brands.flatMap(({ node }) => (
+              <li key={node.path} className="mt-2">
+                <a href="#">{node.name}</a>
+              </li>
+            ))}
+          </ul>
         </div>
         <div className="flex-1">
           <Grid
