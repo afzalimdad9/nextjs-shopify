@@ -4,7 +4,7 @@ import useLogin from '@lib/bigcommerce/use-login'
 import { useUI } from '@components/ui/context'
 import { validate } from 'email-validator'
 
-interface Props {}
+interface Props { }
 
 const LoginView: FC<Props> = () => {
   // Form State
@@ -70,8 +70,8 @@ const LoginView: FC<Props> = () => {
             </a>
           </div>
         )}
-        <Input type="email" placeholder="Email" onChange={setEmail} />
-        <Input type="password" placeholder="Password" onChange={setPassword} />
+        <Input placeholder="Email" onChange={setEmail} type="email" />
+        <Input placeholder="Password" onChange={setPassword} type="password" />
 
         <Button
           variant="slim"

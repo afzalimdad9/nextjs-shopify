@@ -5,7 +5,7 @@ import { useUI } from '@components/ui/context'
 import { Logo, Button, Input } from '@components/ui'
 import useSignup from '@lib/bigcommerce/use-signup'
 
-interface Props {}
+interface Props { }
 
 const SignUpView: FC<Props> = () => {
   // Form State
@@ -69,8 +69,8 @@ const SignUpView: FC<Props> = () => {
         )}
         <Input placeholder="First Name" onChange={setFirstName} />
         <Input placeholder="Last Name" onChange={setLastName} />
-        <Input type="email" placeholder="Email" onChange={setEmail} />
-        <Input type="password" placeholder="Password" onChange={setPassword} />
+        <Input placeholder="Email" onChange={setEmail} type="email" />
+        <Input placeholder="Password" onChange={setPassword} type="password" />
         <span className="text-accents-8">
           <span className="inline-block align-middle ">
             <Info width="15" height="15" />
