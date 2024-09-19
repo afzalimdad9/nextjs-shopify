@@ -2,9 +2,6 @@
   @apply relative;
 }
 
-.mainContainer {
-}
-
 .list {
   @apply flex flex-row items-center justify-items-end h-full;
 }
@@ -26,15 +23,10 @@
   }
 }
 
-.dropdownMenu {
-  @apply absolute right-0 mt-2 w-screen max-w-xs sm:px-0 z-50 border border-accents-1 bg-primary;
-  max-width: 160px;
+.bagCount {
+  @apply border border-accents-1 bg-secondary text-secondary h-4 w-4 absolute rounded-full right-3 top-3 flex items-center justify-center font-bold text-xs;
+}
 
-  &.dropdownMenuContainer {
-    @apply shadow-lg overflow-hidden relative grid py-2;
-  }
-
-  & .link {
-    @apply px-6 py-3 flex items-center space-y-1 hover:bg-accents-1 transition ease-in-out duration-150 text-base leading-6 font-medium text-gray-900;
-  }
+.avatarButton {
+  @apply inline-flex justify-center rounded-full outline-none focus:outline-none;
 }
