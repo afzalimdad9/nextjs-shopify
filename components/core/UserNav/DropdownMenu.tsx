@@ -40,38 +40,38 @@ const DropdownMenu: FC<DropdownMenuProps> = ({ open = false }) => {
     >
       <Menu.Items className={s.dropdownMenu}>
         {LINKS.map(({ name, href }) => (
-          <Menu.Item key={href}>
-            {({ active }) => (
-              <Link href={href}>
+          <Link href={href} key={href}>
+            <Menu.Item>
+              {({ active }) => (
                 <a className={cn(s.link, { [s.active]: active })}>{name}</a>
               </Link>
-            )}
-          </Menu.Item>
+        )}
+      </Menu.Item>
         ))}
-        <Menu.Item>
-          <a
-            className={cn(s.link, 'justify-between')}
-            onClick={() =>
-              theme === 'dark' ? setTheme('light') : setTheme('dark')
-            }
-          >
-            <div>
-              Theme: <strong>{theme}</strong>{' '}
-            </div>
-            <div className="ml-3">
-              {theme == 'dark' ? (
-                <Moon width={20} height={20} />
-              ) : (
-                <Sun width="20" height={20} />
-              )}
-            </div>
-          </a>
-        </Menu.Item>
-        <Menu.Item>
-          <a className={cn(s.link, 'border-t border-accents-2 mt-4')}>Logout</a>
-        </Menu.Item>
-      </Menu.Items>
-    </Transition>
+      <Menu.Item>
+        <a
+          className={cn(s.link, 'justify-between')}
+          onClick={() =>
+            theme === 'dark' ? setTheme('light') : setTheme('dark')
+          }
+        >
+          <div>
+            Theme: <strong>{theme}</strong>{' '}
+          </div>
+          <div className="ml-3">
+            {theme == 'dark' ? (
+              <Moon width={20} height={20} />
+            ) : (
+              <Sun width="20" height={20} />
+            )}
+          </div>
+        </a>
+      </Menu.Item>
+      <Menu.Item>
+        <a className={cn(s.link, 'border-t border-accents-2 mt-4')}>Logout</a>
+      </Menu.Item>
+    </Menu.Items>
+    </Transition >
   )
 }
 
