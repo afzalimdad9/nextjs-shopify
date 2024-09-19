@@ -1,8 +1,9 @@
 import { FC, useEffect, useState } from 'react'
 import cn from 'classnames'
-import useCart from '@lib/bigcommerce/cart/use-cart'
-import { Avatar, Toggle } from '@components/core'
+import s from './UserNav.module.css'
+import { FC } from 'react'
 import { Heart, Bag } from '@components/icon'
+import { Avatar } from '@components/core'
 import { useUI } from '@components/ui/context'
 import s from './UserNav.module.css'
 import { useTheme } from 'next-themes'
@@ -20,7 +21,6 @@ const UserNav: FC<Props> = ({ className, children, ...props }) => {
   const { openSidebar, closeSidebar, displaySidebar } = useUI()
 
   const itemsCount = Object.values(data?.line_items ?? {}).reduce(countItems, 0)
-  let ref = useRef() as React.MutableRefObject<HTMLInputElement>
 
   useEffect(() => {
     function handleClick(e: any) {
