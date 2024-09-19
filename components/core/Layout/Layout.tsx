@@ -40,7 +40,7 @@ const Layout: FC<Props> = ({ className, children }) => {
               Accept cookies
             </Button>
           }
-          className={cn({ 'translate-y-full': acceptedCookies })}
+          className={cn({ ['translate-y-full']: acceptedCookies })}
         />
       </div>
     </CommerceProvider>
