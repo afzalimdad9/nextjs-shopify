@@ -12,6 +12,7 @@ import { HTMLContent } from '@components/core'
 import useAddItem from '@bigcommerce/storefront-data-hooks/cart/use-add-item'
 import type { ProductNode } from '@bigcommerce/storefront-data-hooks/api/operations/get-product'
 import { getProductOptions } from '../helpers'
+import WishlistButton from '@components/wishlist/WishlistButton'
 
 interface Props {
   className?: string
@@ -143,6 +144,7 @@ const ProductView: FC<Props> = ({ product }) => {
           </div>
         </div>
 
+        {/* TODO make it work */}
         <WishlistButton
           className={s.wishlistButton}
           productId={product.entityId}
