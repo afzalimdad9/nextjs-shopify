@@ -21,9 +21,9 @@ Learn how to get started with this Builder + Next.js + Shopify example with this
 ## Table of contents
 
 - [Getting Started](#getting-started)
-  - [1: Create an account for Builder.io](#1-create-an-account-for-builderio)
-  - [2: Your Builder.io private key](#2-your-builderio-private-key)
-  - [3: Clone this repository and initialize a Builder.io space](#3-clone-this-repository-and-initialize-a-builderio-space)
+  - [1: Create an account for Builder.io](#1-create-an-account-for-afzalimdad9)
+  - [2: Your Builder.io private key](#2-your-afzalimdad9-private-key)
+  - [3: Clone this repository and initialize a Builder.io space](#3-clone-this-repository-and-initialize-a-afzalimdad9-space)
   - [4. Shopify private app](#4-shopify-private-app)
   - [5. Connecting Builder to Shopify](#5-connecting-builder-to-shopify)
   - [6. Configure the project to talk to Shopify](#6-configure-the-project-to-talk-to-shopify)
@@ -83,7 +83,7 @@ in the previous step, and change `<space-name>` to something that's
 meaningful to you -- don't worry, you can change it later!
 
 ```
-git clone https://github.com/BuilderIO/nextjs-shopify.git
+git clone https://github.com/afzalimdad9/nextjs-shopify.git
 cd nextjs-shopify
 
 unzip builder
@@ -197,10 +197,10 @@ Now that we have everything setup, start building and publishing pages on builde
 
 You can deploy this code anywhere you like - you can find many deployment options for Next.js [here](https://nextjs.org/docs/deployment). The following options support one click installs and are super easy to start with:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Fbuilderio%2Fnextjs-shopify)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Fafzalimdad9%2Fnextjs-shopify)
 
 - Vercel: for more information check [Vercel docs on Next.js deployments](https://vercel.com/docs/next.js/overview) Or try the one click install by clicking the button above.
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/BuilderIO/nextjs-shopify)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/afzalimdad9/nextjs-shopify)
 
 - Netlify: For more information check [Netlify docs on Next.js deployments](https://www.netlify.com/blog/2020/11/30/how-to-deploy-next.js-sites-to-netlify/) Or try the one click install by clicking the button above.
